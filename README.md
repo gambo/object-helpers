@@ -1,58 +1,26 @@
-# create-svelte
+# object-helpers
 
-Everything you need to build a Svelte library, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+## JSON type
 
-Read more about creating a library [in the docs](https://svelte.dev/docs/kit/packaging).
+The JSON type helps rapidly prototype with nested POJO's and arrays without necessarily knowing the type before hand.
 
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
+```js
+import type { JSON } from 'object-helpers'
 ```
 
-## Developing
+The JSON type is used internally for the `get` and `set` functions, and has been exposed for convenience
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## get function
 
-```bash
-npm run dev
+The get function is a lean implementation of 'lodash.get' as it has been marked as deprecated.
+While JS provides optional chaining, there are DX benefits to having a get function that can deeply request data using a more flexible path construct. It is designed to produce a valid value if it exists, or undefined for all other inputs.
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+```js
+import { get } from 'object-helpers'
 
-Everything inside `src/lib` is part of your library, everything inside `src/routes` can be used as a showcase or preview app.
-
-## Building
-
-To build your library:
-
-```bash
-npm run package
-```
-
-To create a production version of your showcase app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
-
-## Publishing
-
-Go into the `package.json` and give your package the desired name through the `"name"` option. Also consider adding a `"license"` field and point it to a `LICENSE` file which you can create from a template (one popular option is the [MIT license](https://opensource.org/license/mit/)).
-
-To publish your library to [npm](https://www.npmjs.com):
-
-```bash
-npm publish
+let a = {a: {b: c: {d: [undefined, {e: 'the value'}]}}}
+get(a, 'a.b.c.d.1.2') // 'the value'
+get(a, 'bad.path.here') // undefined
+get(a, '1.2.3') ?? 'oops' // oops
+get(a, 'a.b.c.d.2') // {e: 'the value'}
 ```
