@@ -12,7 +12,8 @@
 		"format": "prettier --write .",
 		"lint": "prettier --check . && eslint .",
 		"test:unit": "vitest --ui",
-		"test": "npm run test:unit -- --run"
+		"test": "npm run test:unit -- --run",
+		"changeset": "npx @changesets/cli"
 	},
 	"files": [
 		"dist",
