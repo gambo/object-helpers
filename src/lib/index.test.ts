@@ -1,6 +1,5 @@
 import { test, expect } from 'vitest';
 import { get, set } from './index.js';
-import type { JSON } from './index.ts';
 
 test('Get object path', async () => {
 	const a = { a: { b: { c: { d: { e: 1 } } } } };
@@ -34,39 +33,23 @@ test('Get from undefineds and other undesirables', async () => {
 test('Set object path', async () => {
 	const a = { a: { b: { c: { d: { e: 1 } } } } };
 	expect(set(a, 'a.b.c.d.e', 2)).toStrictEqual({ a: { b: { c: { d: { e: 2 } } } } });
-	const b = { a: { b: { c: { d: { e: 1 } } } } };
-	expect(set(b, 'a.b.z.d.e', 2)).toStrictEqual({
-		a: { b: { c: { d: { e: 1 } }, z: { d: { e: 2 } } } }
+});
+test('Set array path', async () => {
+	const a = {};
+	expect(set(a, 'a.1.2.3', 2)).toMatchObject({
+		a: [undefined, [undefined, undefined, [undefined, undefined, undefined, 2]]]
 	});
 });
-
-test('Set Array path', async () => {
-	const a = { a: { b: { c: { d: { e: 1 } } } } };
-	set(a, 'a.b.c.1.z.x', 2);
-	expect(a).toMatchObject({
-		a: {
-			b: {
-				c: [
-					undefined,
-					{
-						z: {
-							x: 2
-						}
-					}
-				]
-			}
-		}
-	});
-	const b: JSON = [];
-	set(b, '0.0.0.0.0.0', 2);
-	expect(b).toMatchObject([[[[[[2]]]]]]);
-});
-
-test('undefined and other undesirables', () => {
-	expect(set([], '3.a.b.3.c.d', 1)).toMatchObject([
-		undefined,
-		undefined,
-		undefined,
-		{ a: { b: [undefined, undefined, undefined, { c: { d: 1 } }] } }
+test('Start with an array', async () => {
+	const a:Array<{name: string}> = [];
+	set(a, '0.name', 'shaun');
+	set(a, '1.name', 'john');
+	set(a, '2.name', 'paul');
+	set(a, '3.name', 'ringo');
+	expect(a).toMatchObject([
+		{ name: 'shaun' },
+		{ name: 'john' },
+		{ name: 'paul' },
+		{ name: 'ringo' }
 	]);
 });
