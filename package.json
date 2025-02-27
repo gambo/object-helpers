@@ -1,6 +1,7 @@
 {
 	"name": "@gambostr/object-helpers",
 	"version": "0.1.0",
+	"license": "MIT",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run prepack",
@@ -68,5 +69,8 @@
 		"onlyBuiltDependencies": [
 			"esbuild"
 		]
+	},
+	"dependencies": {
+		"@gambostr/object-helpers": "^0.1.0"
 	}
 }
